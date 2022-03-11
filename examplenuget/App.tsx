@@ -31,6 +31,8 @@ import {
   ContentDialog,
   ContentDialogButton,
   ContentDialogResult,
+  Visibility,
+  WinUIEnums,
 } from 'react-native-xaml';
 import {
   Colors,
@@ -79,7 +81,7 @@ const App = () => {
   const [x, setX] = React.useState("100");
 
   const [showState, setShowState] = React.useState(ContentDialogState.Hidden);
-
+  const [visible, setVisible] = React.useState(Visibility.Visible);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -92,18 +94,34 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <TextBox
+          {/* <TextBox
             text={`x`}
             onBeforeTextChanging={e => {
               if (e.nativeEvent.args) {
                 setX(e.nativeEvent.args.newText);
               }
             }}
+          /> */}
+
+          <WinUI.InfoBar
+            message="the message"
+            title="Location coordinates:"
+            isOpen={true}
+            visibility={visible}
+            onClosed={() => {
+              setVisible(Visibility.Collapsed);
+            }}
+            severity={WinUIEnums.InfoBarSeverity.Success}
           />
 
-        <WinUI.ColorPicker onColorChanged={(e) => {
-          console.log(e.nativeEvent);
-        }} />
+          <Button content="Detect my coordinates" resources={{
+            ButtonForeground: "#00fff1",
+            ButtonForegroundPressed: "#2090ff",
+          }} />
+
+          <WinUI.ColorPicker onColorChanged={(e) => {
+            console.log(e.nativeEvent);
+          }} />
 
         </View>
       </ScrollView>
